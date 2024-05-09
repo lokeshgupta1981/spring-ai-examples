@@ -1,5 +1,6 @@
 package com.howtodoinjava.ai.demo.web;
 
+
 import org.springframework.ai.image.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ public class OpenAiImageController {
 
   @GetMapping("/image-gen")
   public String imageGen(@RequestParam String message) {
+
     ImageOptions options = ImageOptionsBuilder.builder()
         .withModel("dall-e-3")
         .withHeight(1024)

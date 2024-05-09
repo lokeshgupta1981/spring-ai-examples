@@ -2,8 +2,8 @@ package com.howtodoinjava.ai.demo.config;
 
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.image.ImageClient;
-import org.springframework.ai.openai.OpenAiChatClient;
 import org.springframework.ai.openai.OpenAiAudioSpeechClient;
+import org.springframework.ai.openai.OpenAiChatClient;
 import org.springframework.ai.openai.OpenAiImageClient;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.ai.openai.api.OpenAiAudioApi;
