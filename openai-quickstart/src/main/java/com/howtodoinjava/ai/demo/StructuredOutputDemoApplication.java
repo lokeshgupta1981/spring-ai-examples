@@ -20,7 +20,7 @@ import org.springframework.core.convert.support.DefaultConversionService;
 @SpringBootApplication
 public class StructuredOutputDemoApplication {
 
-  @Bean
+  //@Bean
   ApplicationRunner applicationRunner(OpenAiChatClient chatClient) {
     return args -> {
       listOutputConverter(chatClient);
