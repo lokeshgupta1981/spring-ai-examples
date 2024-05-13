@@ -1,17 +1,26 @@
 package com.howtodoinjava.ai.demo.web;
 
 import com.howtodoinjava.ai.demo.model.JokeResponse;
+import com.howtodoinjava.ai.demo.model.Pair;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.ChatResponse;
+import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
+import org.springframework.ai.converter.ListOutputConverter;
+import org.springframework.ai.converter.MapOutputConverter;
+import org.springframework.ai.converter.StructuredOutputConverter;
+import org.springframework.ai.parser.ListOutputParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -83,5 +92,53 @@ public class OpenAiChatController {
     System.out.println("Usage: " + usage.getPromptTokens() + " " + usage.getGenerationTokens() + "; " + usage.getTotalTokens());*/
 
     return parser.parse(response.getResult().getOutput().getContent());
+  }
+
+  @GetMapping("/country-capital-service/map")
+  public Map<String, Object> getCapitalNamesInMap(@RequestParam String countryNamesCsv) {
+    if (countryNamesCsv == null || countryNamesCsv.isEmpty()) {
+      throw new IllegalArgumentException("Country names CSV cannot be null or empty");
+    }
+    MapOutputConverter converter = new MapOutputConverter();
+    String format = converter.getFormat();
+    PromptTemplate pt = new PromptTemplate("For these list of countries {countryNamesCsv}, return the list of capitals. {format}");
+    Prompt renderedPrompt = pt.create(Map.of("countryNamesCsv", countryNamesCsv, "format", format));
+    ChatResponse response = chatClient.call(renderedPrompt);
+    Generation generation = response.getResult();  // call getResults() if multiple generations
+    System.out.println(generation.getOutput().getContent());
+    return converter.parse(generation.getOutput().getContent());
+  }
+
+  @GetMapping("/country-capital-service/bean")
+  public Pair getCapitalNamesInPojo(@RequestParam String countryName) {
+
+    if (countryName == null || countryName.isEmpty()) {
+      throw new IllegalArgumentException("Country names CSV cannot be null or empty");
+    }
+
+    BeanOutputConverter<Pair> converter = new BeanOutputConverter(Pair.class);
+    String format = converter.getFormat();
+
+    PromptTemplate pt = new PromptTemplate("For these list of countries {countryName}, return the list of its 10 popular cities. {format}");
+    Prompt renderedPrompt = pt.create(Map.of("countryName", countryName, "format", format));
+
+    ChatResponse response = chatClient.call(renderedPrompt);
+    Generation generation = response.getResult();  // call getResults() if multiple generations
+    return converter.parse(generation.getOutput().getContent());
+  }
+
+  @GetMapping("/country-capital-service/list")
+  public List<String> getCapitalNamesInList(@RequestParam String countryNamesCsv) {
+    if (countryNamesCsv == null || countryNamesCsv.isEmpty()) {
+      throw new IllegalArgumentException("Country names CSV cannot be null or empty");
+    }
+    ListOutputConverter converter = new ListOutputConverter(new DefaultConversionService());
+    String format = converter.getFormat();
+    PromptTemplate pt = new PromptTemplate("For these list of countries {countryNamesCsv}, return the list of capitals. {format}");
+    Prompt renderedPrompt = pt.create(Map.of("countryNamesCsv", countryNamesCsv, "format", format));
+    ChatResponse response = chatClient.call(renderedPrompt);
+    Generation generation = response.getResult();  // call getResults() if multiple generations
+    System.out.println(generation.getOutput().getContent());
+    return converter.parse(generation.getOutput().getContent());
   }
 }
