@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OpenAiImageController {
 
-  private final ImageClient imageClient;
+  private final ImageModel imageModel;
 
-  public OpenAiImageController(ImageClient imageClient) {
-    this.imageClient = imageClient;
+  public OpenAiImageController(ImageModel imageClient) {
+    this.imageModel = imageClient;
   }
 
   @GetMapping("/image-gen")
@@ -25,7 +25,7 @@ public class OpenAiImageController {
         .build();
 
     ImagePrompt imagePrompt = new ImagePrompt(message, options);
-    ImageResponse response = imageClient.call(imagePrompt);
+    ImageResponse response = imageModel.call(imagePrompt);
     String imageUrl = response.getResult().getOutput().getUrl();
 
     return "redirect:" + imageUrl;

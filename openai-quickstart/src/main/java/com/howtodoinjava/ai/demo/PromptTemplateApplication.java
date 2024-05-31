@@ -1,12 +1,12 @@
 package com.howtodoinjava.ai.demo;
 
-import org.springframework.ai.chat.Generation;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
-import org.springframework.ai.openai.OpenAiChatClient;
+import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,14 +25,14 @@ public class PromptTemplateApplication {
         .run(args);
   }
 
-  @Bean
-  ApplicationRunner applicationRunner(OpenAiChatClient chatClient) {
+  @Bean(name = "promptTemplateApplicationRunner")
+  ApplicationRunner applicationRunner(OpenAiChatModel chatModel) {
     return args -> {
-      userPrompt(chatClient);
+      userPrompt(chatModel);
     };
   }
 
-  private void userPrompt(OpenAiChatClient chatClient) {
+  private void userPrompt(OpenAiChatModel chatModel) {
 
     String message = """
         Provide me a List of {subject}
@@ -42,11 +42,11 @@ public class PromptTemplateApplication {
         Map.of("subject", "10 countries with largest population in descending oder"));
     Prompt prompt = new Prompt(promptTemplate.createMessage());
 
-    Generation generation = chatClient.call(prompt).getResult();
+    Generation generation = chatModel.call(prompt).getResult();
     System.out.println(generation.getOutput().getContent());
   }
 
-  private void systemAndUserPrompt(OpenAiChatClient chatClient) {
+  private void systemAndUserPrompt(OpenAiChatModel chatModel) {
 
     //1. User provided input message
     String userText = """
@@ -72,7 +72,7 @@ public class PromptTemplateApplication {
     Prompt prompt = new Prompt(List.of(userMessage, systemMessage));
 
     //4. API invocation and result extraction
-    Generation generation = chatClient.call(prompt).getResult();
+    Generation generation = chatModel.call(prompt).getResult();
     System.out.println(generation.getOutput().getContent());
   }
 }

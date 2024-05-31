@@ -2,16 +2,14 @@ package com.howtodoinjava.ai.demo.web;
 
 import com.howtodoinjava.ai.demo.model.JokeResponse;
 import com.howtodoinjava.ai.demo.model.Pair;
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.ChatResponse;
-import org.springframework.ai.chat.Generation;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.converter.BeanOutputConverter;
 import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.ai.converter.MapOutputConverter;
-import org.springframework.ai.converter.StructuredOutputConverter;
-import org.springframework.ai.parser.ListOutputParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.support.DefaultConversionService;
@@ -19,29 +17,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 public class OpenAiChatController {
 
-  private final ChatClient chatClient;
+  private final ChatModel chatModel;
   private String promptTemplate;
   private String jsonPromptTemplate;
 
   @Autowired
-  public OpenAiChatController(ChatClient chatClient,
+  public OpenAiChatController(ChatModel chatModel,
                           @Value("${app.joke.simple.promptTemplate}") String promptTemplate,
                           @Value("${app.joke.formatted.promptTemplate}") String jsonPromptTemplate) {
-    this.chatClient = chatClient;
+    this.chatModel = chatModel;
     this.promptTemplate = promptTemplate;
     this.jsonPromptTemplate =jsonPromptTemplate;
   }
 
   @GetMapping("/joke-service/simple")
   public Map<String, String> tellSimpleJoke() {
-    return Map.of("generation", chatClient.call("Tell me a joke"));
+    return Map.of("generation", chatModel.call("Tell me a joke"));
   }
 
   @GetMapping("/joke-service/simple-with-prompt")
@@ -50,7 +47,7 @@ public class OpenAiChatController {
     PromptTemplate pt = new PromptTemplate(promptTemplate);
     Prompt renderedPrompt = pt.create(Map.of("subject", subject, "language", language));
 
-    ChatResponse response = chatClient.call(renderedPrompt);
+    ChatResponse response = chatModel.call(renderedPrompt);
     return response.getResult().getOutput().getContent();
   }
 
@@ -86,7 +83,7 @@ public class OpenAiChatController {
     PromptTemplate pt = new PromptTemplate(jsonPromptTemplate);
     Prompt renderedPrompt = pt.create(Map.of("subject", subject, "language", language, "format", format));
 
-    ChatResponse response = chatClient.call(renderedPrompt);
+    ChatResponse response = chatModel.call(renderedPrompt);
 
     /*Usage usage = response.getMetadata().getUsage();
     System.out.println("Usage: " + usage.getPromptTokens() + " " + usage.getGenerationTokens() + "; " + usage.getTotalTokens());*/
@@ -103,7 +100,7 @@ public class OpenAiChatController {
     String format = converter.getFormat();
     PromptTemplate pt = new PromptTemplate("For these list of countries {countryNamesCsv}, return the list of capitals. {format}");
     Prompt renderedPrompt = pt.create(Map.of("countryNamesCsv", countryNamesCsv, "format", format));
-    ChatResponse response = chatClient.call(renderedPrompt);
+    ChatResponse response = chatModel.call(renderedPrompt);
     Generation generation = response.getResult();  // call getResults() if multiple generations
     System.out.println(generation.getOutput().getContent());
     return converter.parse(generation.getOutput().getContent());
@@ -122,7 +119,7 @@ public class OpenAiChatController {
     PromptTemplate pt = new PromptTemplate("For these list of countries {countryName}, return the list of its 10 popular cities. {format}");
     Prompt renderedPrompt = pt.create(Map.of("countryName", countryName, "format", format));
 
-    ChatResponse response = chatClient.call(renderedPrompt);
+    ChatResponse response = chatModel.call(renderedPrompt);
     Generation generation = response.getResult();  // call getResults() if multiple generations
     return converter.parse(generation.getOutput().getContent());
   }
@@ -136,7 +133,7 @@ public class OpenAiChatController {
     String format = converter.getFormat();
     PromptTemplate pt = new PromptTemplate("For these list of countries {countryNamesCsv}, return the list of capitals. {format}");
     Prompt renderedPrompt = pt.create(Map.of("countryNamesCsv", countryNamesCsv, "format", format));
-    ChatResponse response = chatClient.call(renderedPrompt);
+    ChatResponse response = chatModel.call(renderedPrompt);
     Generation generation = response.getResult();  // call getResults() if multiple generations
     System.out.println(generation.getOutput().getContent());
     return converter.parse(generation.getOutput().getContent());
