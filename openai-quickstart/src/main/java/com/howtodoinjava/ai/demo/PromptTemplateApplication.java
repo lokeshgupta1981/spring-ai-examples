@@ -1,12 +1,16 @@
 package com.howtodoinjava.ai.demo;
 
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
+import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +19,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.core.io.Resource;
 
 @SpringBootApplication
 public class PromptTemplateApplication {
@@ -25,42 +30,56 @@ public class PromptTemplateApplication {
         .run(args);
   }
 
+  @Value("classpath:/prompts/system-message.st")
+  private Resource promptSystemMessage;
+
+  @Value("classpath:/prompts/user-message.st")
+  private Resource promptUserMessage;
+
+  @Value("classpath:/prompts/get-list-message.st")
+  private Resource promptGetListMessage;
+
   @Bean(name = "promptTemplateApplicationRunner")
   ApplicationRunner applicationRunner(OpenAiChatModel chatModel) {
     return args -> {
       userPrompt(chatModel);
+      systemAndUserPrompt(chatModel);
     };
   }
 
   private void userPrompt(OpenAiChatModel chatModel) {
 
-    String message = """
-        Provide me a List of {subject}
-        """;
+    PromptTemplate promptTemplate = new PromptTemplate("Tell me about {subject}. Explain if I am {age} years old.");
 
-    PromptTemplate promptTemplate = new PromptTemplate(message,
-        Map.of("subject", "10 countries with largest population in descending oder"));
-    Prompt prompt = new Prompt(promptTemplate.createMessage());
+    //Obtain these values from user
+    String subject = "USA Elections";
+    int age = 14;
 
-    Generation generation = chatModel.call(prompt).getResult();
+    Prompt prompt = promptTemplate.create(Map.of("subject", subject, "age", age));
+    Generation generation = chatModel
+      .call(prompt)
+      .getResult();
+
+    System.out.println(prompt.getContents());
     System.out.println(generation.getOutput().getContent());
   }
 
   private void systemAndUserPrompt(OpenAiChatModel chatModel) {
 
-    //1. User provided input message
+    //1. Template from user message
     String userText = """
-        Tell me about five most famous tourist spots in Dubai(UAE).
+        Tell me about five most famous tourist spots in {location}.
         Write at least a sentence for each spot.
         """;
 
-    Message userMessage = new UserMessage(userText);
+    String location = "Dubai(UAE)";  //Get from user
+    PromptTemplate userPromptTemplate = new PromptTemplate(userText);
+    Message userMessage = userPromptTemplate.createMessage(Map.of("location", location));
 
-    //2. Application defined system message
+    //2. Template for system message
     String systemText = """
-        You are a helpful AI assistant that helps people find information.
-        Your name is {name}
-        Start with telling your name and quick summary of answer you are going to provide in a sentence.
+        You are a helpful AI assistant that helps people find information. Your name is {name}
+        In your first response, greet the user, quick summary of answer and then do not repeat it. 
         Next, you should reply to the user's request. 
         Finish with thanking the user for asking question in the end.
         """;
@@ -73,6 +92,6 @@ public class PromptTemplateApplication {
 
     //4. API invocation and result extraction
     Generation generation = chatModel.call(prompt).getResult();
-    System.out.println(generation.getOutput().getContent());
+    System.out.println(generation.getOutput());
   }
 }

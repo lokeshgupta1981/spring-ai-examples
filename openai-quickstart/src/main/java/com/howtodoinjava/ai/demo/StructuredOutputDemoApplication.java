@@ -20,7 +20,7 @@ import java.util.Map;
 @SpringBootApplication
 public class StructuredOutputDemoApplication {
 
-  @Bean(name = "structuredOutputDemoApplicationRunner")
+  //@Bean(name = "structuredOutputDemoApplicationRunner")
   ApplicationRunner applicationRunner(OpenAiChatModel chatModel) {
     return args -> {
       listOutputConverter(chatModel);

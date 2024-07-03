@@ -11,8 +11,8 @@ public class OpenAiImageController {
 
   private final ImageModel imageModel;
 
-  public OpenAiImageController(ImageModel imageClient) {
-    this.imageModel = imageClient;
+  public OpenAiImageController(ImageModel imageModel) {
+    this.imageModel = imageModel;
   }
 
   @GetMapping("/image-gen")
