@@ -1,15 +1,11 @@
-package com.howtodoinjava.ai.demo;
+package com.howtodoinjava.ai.promptTemplate;
 
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.ai.chat.prompt.SystemPromptTemplate;
 import org.springframework.ai.openai.OpenAiChatModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
@@ -49,7 +45,8 @@ public class PromptTemplateApplication {
 
   private void userPrompt(OpenAiChatModel chatModel) {
 
-    PromptTemplate promptTemplate = new PromptTemplate("Tell me about {subject}. Explain if I am {age} years old.");
+    PromptTemplate promptTemplate
+      = new PromptTemplate("Tell me about {subject}. Explain if I am {age} years old.");
 
     //Obtain these values from user
     String subject = "USA Elections";
@@ -73,6 +70,7 @@ public class PromptTemplateApplication {
         """;
 
     String location = "Dubai(UAE)";  //Get from user
+    //PromptTemplate userPromptTemplate = new PromptTemplate(promptUserMessage);
     PromptTemplate userPromptTemplate = new PromptTemplate(userText);
     Message userMessage = userPromptTemplate.createMessage(Map.of("location", location));
 
@@ -84,6 +82,7 @@ public class PromptTemplateApplication {
         Finish with thanking the user for asking question in the end.
         """;
 
+    //SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(promptSystemMessage);
     SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemText);
     Message systemMessage = systemPromptTemplate.createMessage(Map.of("name", "Alexa"));
 

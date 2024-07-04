@@ -1,4 +1,4 @@
-package com.howtodoinjava.ai.demo.model;
+package com.howtodoinjava.ai.chat;
 
 public record JokeResponse(String subject, String language, String joke) {
 }

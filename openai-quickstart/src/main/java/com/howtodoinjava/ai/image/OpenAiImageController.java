@@ -1,4 +1,4 @@
-package com.howtodoinjava.ai.demo.web;
+package com.howtodoinjava.ai.image;
 
 
 import org.springframework.ai.image.*;

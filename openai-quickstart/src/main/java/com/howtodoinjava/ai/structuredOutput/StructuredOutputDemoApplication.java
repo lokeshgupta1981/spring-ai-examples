@@ -1,4 +1,4 @@
-package com.howtodoinjava.ai.demo;
+package com.howtodoinjava.ai.structuredOutput;
 
 import org.springframework.ai.chat.model.Generation;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -11,7 +11,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.support.DefaultConversionService;
 
 import java.util.List;

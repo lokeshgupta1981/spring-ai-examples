@@ -1,7 +1,7 @@
-package com.howtodoinjava.ai.demo.web;
+package com.howtodoinjava.ai.chat;
 
-import com.howtodoinjava.ai.demo.model.JokeResponse;
-import com.howtodoinjava.ai.demo.model.Pair;
+import java.util.List;
+import java.util.Map;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.Generation;
@@ -16,9 +16,6 @@ import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.Map;
 
 @RestController
 public class OpenAiChatController {
@@ -51,12 +48,12 @@ public class OpenAiChatController {
     return response.getResult().getOutput().getContent();
   }
 
-  @GetMapping("/joke-service/json-with-prompt")
+  /*@GetMapping("/joke-service/json-with-prompt")
   public JokeResponse tellSpecificJokeInJsonFormat(@RequestParam("subject") String subject,
       @RequestParam("language") String language) {
 
     BeanOutputConverter<JokeResponse> parser = new BeanOutputConverter<>(JokeResponse.class);
-    /*
+    *//*
       Your response should be in JSON format.
       Do not include any explanations, only provide a RFC8259 compliant JSON response following this format without deviation.
       Do not include Markdown code blocks in your response.
@@ -77,7 +74,7 @@ public class OpenAiChatController {
           }
         }
       }```
-      */
+      *//*
     String format = parser.getFormat();
 
     PromptTemplate pt = new PromptTemplate(jsonPromptTemplate);
@@ -86,11 +83,11 @@ public class OpenAiChatController {
 
     ChatResponse response = chatModel.call(renderedPrompt);
 
-    /*Usage usage = response.getMetadata().getUsage();
-    System.out.println("Usage: " + usage.getPromptTokens() + " " + usage.getGenerationTokens() + "; " + usage.getTotalTokens());*/
+    *//*Usage usage = response.getMetadata().getUsage();
+    System.out.println("Usage: " + usage.getPromptTokens() + " " + usage.getGenerationTokens() + "; " + usage.getTotalTokens());*//*
 
     return parser.convert(response.getResult().getOutput().getContent());
-  }
+  }*/
 
   @GetMapping("/country-capital-service/map")
   public Map<String, Object> getCapitalNamesInMap(@RequestParam String countryNamesCsv) {
@@ -108,7 +105,7 @@ public class OpenAiChatController {
     return converter.convert(generation.getOutput().getContent());
   }
 
-  @GetMapping("/country-capital-service/bean")
+  /*@GetMapping("/country-capital-service/bean")
   public Pair getCapitalNamesInPojo(@RequestParam String countryName) {
 
     if (countryName == null || countryName.isEmpty()) {
@@ -125,7 +122,7 @@ public class OpenAiChatController {
     ChatResponse response = chatModel.call(renderedPrompt);
     Generation generation = response.getResult();  // call getResults() if multiple generations
     return converter.convert(generation.getOutput().getContent());
-  }
+  }*/
 
   @GetMapping("/country-capital-service/list")
   public List<String> getCapitalNamesInList(@RequestParam String countryNamesCsv) {

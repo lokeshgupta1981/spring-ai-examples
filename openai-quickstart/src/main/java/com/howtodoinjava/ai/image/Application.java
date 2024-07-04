@@ -1,4 +1,4 @@
-package com.howtodoinjava.ai.demo;
+package com.howtodoinjava.ai.image;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
