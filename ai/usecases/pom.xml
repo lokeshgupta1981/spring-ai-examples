@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.howtodoinjava.ai.demo</groupId>
+    <artifactId>ai</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <groupId>com.howtodoinjava.ai.demo</groupId>
+  <artifactId>usecases</artifactId>
+  <packaging>pom</packaging>
+  <name>usecases</name>
+  <url>http://maven.apache.org</url>
+
+  <modules>
+    <module>generate-sql-queries</module>
+    <module>text-classifier</module>
+    <module>vector-store-pipeline</module>
+  </modules>
+
+</project>

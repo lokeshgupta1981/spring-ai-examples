@@ -1,4 +1,4 @@
-# Getting Started with Spring AI
+# Spring AI Examples
 
 ## Prerequisites
 
@@ -15,12 +15,3 @@ export SPRING_AI_OPENAI_API_KEY=<INSERT KEY HERE>
 ```
 ./mvnw spring-boot:run
 ```
-
-## Related Tutorials
-
-Refer to these tutorials for how to execute and what to expect in API calls.
-
-* [Spring AI Tutorial (with Examples)](https://howtodoinjava.com/spring-ai/spring-ai-tutorial/)
-* [Spring AI Example: Generate Image from Text](https://howtodoinjava.com/spring-ai/spring-ai-image-generation-example/)
-* [Spring AI Structured Output Converters (List, Map and Bean)](https://howtodoinjava.com/spring-ai/structured-output-converters/)
-* [Spring AI PromptTemplate Example](https://howtodoinjava.com/spring-ai/prompt-template-example/)
