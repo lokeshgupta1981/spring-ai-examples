@@ -1,5 +1,6 @@
-package com.howtodoinjava.ai.demo;
+package com.howtodoinjava.demo;
 
+import java.util.Arrays;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.embedding.EmbeddingRequest;
 import org.springframework.ai.openai.OpenAiEmbeddingOptions;
@@ -19,14 +20,10 @@ class EmbeddingController {
   }
 
   @PostMapping("/embed")
-  String embed(@RequestBody String message) {
-
-    if (message == null || message.length() == 0) {
-      return "Empty content for embedding";
-    }
+  Response embed(@RequestBody String message) {
 
     var embeddings = embeddingModel.embed(message);
-    return "Size of the embedding vector: " + embeddings.size();
+    return new Response(embeddings.size(), embeddings);
   }
 
   @PostMapping("/embed/openai-options")
@@ -73,4 +70,7 @@ class EmbeddingController {
     return "Size of the embedding vector: " + embeddings.size();
   }*/
 
+}
+
+record Response(int dimension, List<Double> vector){
 }

@@ -4,17 +4,15 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.howtodoinjava.ai.demo</groupId>
-    <artifactId>ai</artifactId>
+    <artifactId>embedding-model</artifactId>
     <version>1.0.0</version>
   </parent>
 
-  <artifactId>embedding-model</artifactId>
-  <packaging>pom</packaging>
-  <name>embedding-model</name>
+  <artifactId>openai</artifactId>
+  <packaging>jar</packaging>
+  <name>openai</name>
+  <url>http://maven.apache.org</url>
 
-  <modules>
-    <module>openai</module>
-  </modules>
 
   <dependencies>
     <dependency>
@@ -22,5 +20,4 @@
       <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
     </dependency>
   </dependencies>
-
 </project>
