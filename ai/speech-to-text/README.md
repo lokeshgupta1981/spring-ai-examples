@@ -1,4 +1,4 @@
-Spring AI Audio Transcription Example
+# Spring AI Audio Transcription Example
 
 Spring AI currently supports only OpenAI's whisper model for speech transcription to JSON or TEXT files using ```OpenAiAudioTranscriptionModel``` class.
 
