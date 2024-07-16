@@ -36,14 +36,14 @@ public class CloudFunctionConfig {
   }
 
   @Bean
-  Function<Flux<List<Document>>, Flux<List<Document>>> splitter() {
+  Function<Flux<List<Document>>, Flux<List<Document>>> documentTransformer() {
     return documentListFlux ->
       documentListFlux
         .map(unsplitList -> new TokenTextSplitter().apply(unsplitList));
   }
 
   @Bean
-  Consumer<Flux<List<Document>>> vectorStoreConsumer(VectorStore vectorStore) {
+  Consumer<Flux<List<Document>>> documentWriter(VectorStore vectorStore) {
     return documentFlux -> documentFlux
       .doOnNext(documents -> {
         LOGGER.info("Writing {} documents to vector store.", documents.size());
@@ -52,5 +52,4 @@ public class CloudFunctionConfig {
       })
       .subscribe();
   }
-
 }

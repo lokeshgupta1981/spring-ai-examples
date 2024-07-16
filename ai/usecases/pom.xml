@@ -18,6 +18,7 @@
     <module>generate-sql-queries</module>
     <module>text-classifier</module>
     <module>vector-store-pipeline</module>
+    <module>etp-pipeline-spring-ai</module>
   </modules>
 
 </project>
