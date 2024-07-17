@@ -20,6 +20,7 @@ public class CloudFunctionConfig {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CloudFunctionConfig.class);
 
+
   @Bean
   Function<Flux<Message<byte[]>>, Flux<List<Document>>> documentReader() {
     return resourceFlux -> resourceFlux
