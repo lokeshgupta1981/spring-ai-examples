@@ -12,5 +12,4 @@ public class CustomExceptionHandler {
   public ProblemDetail handle(AiException ex) {
     return ProblemDetail.forStatusAndDetail(HttpStatus.EXPECTATION_FAILED, ex.getMessage());
   }
-
 }

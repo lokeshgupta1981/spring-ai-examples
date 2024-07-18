@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class App {
+public class GenerateSqlWithAiApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(GenerateSqlWithAiApplication.class, args);
+  }
 }
