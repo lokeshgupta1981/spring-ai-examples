@@ -28,6 +28,7 @@
     <module>similarity-search</module>
     <module>embedding-model</module>
     <module>embedding-transformer</module>
+    <module>ollama-local-setup</module>
   </modules>
 
 </project>
