@@ -15,6 +15,6 @@ public class ChatController {
 
   @GetMapping("/chat/function")
   String chat(@RequestParam String stockName) {
-    return chatService.getQuoteByStockName(stockName);
+    return chatService.getPriceByStockName(stockName);
   }
 }

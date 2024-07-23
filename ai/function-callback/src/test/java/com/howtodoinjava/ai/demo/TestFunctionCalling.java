@@ -5,7 +5,9 @@ import org.springframework.boot.test.context.TestConfiguration;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestFunctionCalling {
+
   public static void main(String[] args) {
-    SpringApplication.from(SpringAiFunctionCallbackApplication::main).with(SpringAiFunctionCallbackApplicationTest.class).run(args);
+    SpringApplication.from(SpringAiFunctionCallbackApplication::main)
+      .with(SpringAiFunctionCallbackApplicationTest.class).run(args);
   }
 }

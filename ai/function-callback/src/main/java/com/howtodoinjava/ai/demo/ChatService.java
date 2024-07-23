@@ -12,14 +12,14 @@ public class ChatService {
     this.chatClient = chatClientBuilder.build();
   }
 
-  String getQuoteByStockName(String stockName) {
-    var userPromptTemplate = "Get the latest quote for {stockName}.";
+  String getPriceByStockName(String stockName) {
+    var userPromptTemplate = "Get the latest price for {stockName}.";
     return chatClient.prompt()
       .user(userSpec -> userSpec
         .text(userPromptTemplate)
         .param("stockName", stockName)
       )
-      .functions("quoteByStockNameFunction")
+      .functions("priceByStockNameFunction")
       .call()
       .content();
   }

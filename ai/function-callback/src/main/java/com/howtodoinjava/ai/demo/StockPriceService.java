@@ -5,19 +5,19 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Service;
 
 @Service
-public class StockQuoteService {
+public class StockPriceService {
 
   private static final Map<Stock, Double> data = new ConcurrentHashMap<>();
 
   static {
     data.put(new Stock("Google"), 101.00);
-    data.put(new Stock("Microsoft"), 102.00);
+    data.put(new Stock("Microsoft"), 100.00);
     data.put(new Stock("Tesla"), 103.00);
     data.put(new Stock("OpenAI"), 104.00);
     data.put(new Stock("HDFC"), 105.00);
   }
 
-  Double getEquityPrice(Stock stock) {
+  Double getStockPrice(Stock stock) {
     return data.keySet().stream()
       .filter(s -> s.name().equalsIgnoreCase(stock.name()))
       .map(s -> data.get(s))
@@ -26,6 +26,5 @@ public class StockQuoteService {
   }
 
   public record Stock(String name) {
-
   }
 }
