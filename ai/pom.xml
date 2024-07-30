@@ -29,6 +29,7 @@
     <module>embedding-model</module>
     <module>embedding-transformer</module>
     <module>ollama-local-setup</module>
+    <module>chat-ui-with-rag</module>
   </modules>
 
 </project>
