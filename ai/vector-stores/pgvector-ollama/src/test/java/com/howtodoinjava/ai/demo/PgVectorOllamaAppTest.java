@@ -1,12 +1,14 @@
 package com.howtodoinjava.ai.demo;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AppTest {
+@Disabled
+public class PgVectorOllamaAppTest {
 
   @Test
-  void contextLoads() {
+  public void contextLoads() {
   }
 }

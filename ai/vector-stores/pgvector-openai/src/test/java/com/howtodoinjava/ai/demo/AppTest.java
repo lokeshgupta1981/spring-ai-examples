@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @Disabled
-class AppTest {
+public class AppTest {
 
   @Test
-  void contextLoads() {
+  public void contextLoads() {
   }
 }
