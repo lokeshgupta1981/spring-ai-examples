@@ -26,15 +26,20 @@ public class App implements CommandLineRunner {
   @Override
   public void run(String... args) {
     List<Document> documents = List.of(
-      new Document("Java is a high-level, object-oriented programming language known for its platform independence."),
-      new Document("It is widely used for developing enterprise applications, Android apps, and big data processing systems."),
-      new Document("Java's strong typing, automatic memory management, and extensive libraries contribute to its popularity.", Map.of("reason", "popularity")));
+      new Document(
+        "Java is a high-level, object-oriented programming language known for its platform independence."),
+      new Document(
+        "It is widely used for developing enterprise applications, Android apps, and big data processing systems."),
+      new Document(
+        "Java's strong typing, automatic memory management, and extensive libraries contribute to its popularity.",
+        Map.of("reason", "popularity")));
 
     // Add the documents to PGVector
     vectorStore.add(documents);
 
     // Retrieve documents similar to a query
-    List<Document> results = vectorStore.similaritySearch(SearchRequest.query("programming language").withTopK(1));
+    List<Document> results = vectorStore
+      .similaritySearch(SearchRequest.query("programming language").withTopK(1));
 
     results.stream()
       .map(Document::getContent)
