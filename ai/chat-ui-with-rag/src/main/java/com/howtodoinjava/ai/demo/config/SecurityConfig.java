@@ -21,16 +21,18 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     return http
-      .authorizeRequests(authorize -> authorize
+      .authorizeHttpRequests(auth -> auth
         .requestMatchers("/login").permitAll()
         .anyRequest().authenticated()
       )
-      .formLogin(formLogin -> formLogin
+      .formLogin(form -> form
         .loginPage("/login")
         .defaultSuccessUrl("/", true)
       )
       .csrf(csrf -> csrf.disable())
-      .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
+      .headers(headers -> headers
+        .frameOptions(frameOptions -> frameOptions.sameOrigin())
+      )
       .build();
   }
 

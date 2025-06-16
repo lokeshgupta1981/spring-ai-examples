@@ -47,6 +47,6 @@ public class UploadController {
     return new UploadResponse(file.getOriginalFilename(), file.getContentType(), file.getSize());
   }
 
-  private static record UploadResponse(String fileName, String fileType, long fileSize) {
+  private record UploadResponse(String fileName, String fileType, long fileSize) {
   }
 }

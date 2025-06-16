@@ -1,14 +1,14 @@
 package com.howtodoinjava.ai.demo.web;
 
-import static org.springframework.ai.chat.client.advisor.AbstractChatMemoryAdvisor.CHAT_MEMORY_CONVERSATION_ID_KEY;
 
 import com.howtodoinjava.ai.demo.web.model.Answer;
 import com.howtodoinjava.ai.demo.web.model.Question;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.PromptChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.security.core.Authentication;
@@ -25,11 +25,15 @@ public class ChatController {
 
   public ChatController(ChatClient.Builder chatClientBuilder, VectorStore vectorStore) {
 
+    var qaAdvisor = QuestionAnswerAdvisor.builder(vectorStore)
+      .searchRequest(SearchRequest.builder().similarityThreshold(0.8d).topK(6).build())
+      .build();
+
     this.chatClient = chatClientBuilder
       .defaultAdvisors(
         new SimpleLoggerAdvisor(),
-        new QuestionAnswerAdvisor(vectorStore, SearchRequest.defaults()),
-        new PromptChatMemoryAdvisor(new InMemoryChatMemory()))
+        qaAdvisor,
+        MessageChatMemoryAdvisor.builder(MessageWindowChatMemory.builder().build()).build())
       .build();
   }
 
@@ -38,7 +42,7 @@ public class ChatController {
     return chatClient.prompt()
       .user(question.question())
       .advisors(
-        advisorSpec -> advisorSpec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, user.getPrincipal()))
+        advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, user.getPrincipal()))
       .call()
       .entity(Answer.class);
   }
