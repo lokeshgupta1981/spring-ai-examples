@@ -7,10 +7,13 @@ import org.springframework.ai.chat.client.ChatClientRequest;
 import org.springframework.ai.chat.client.ChatClientResponse;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisor;
 import org.springframework.ai.chat.client.advisor.api.CallAdvisorChain;
+import org.springframework.ai.chat.client.advisor.api.StreamAdvisor;
+import org.springframework.ai.chat.client.advisor.api.StreamAdvisorChain;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.util.Assert;
+import reactor.core.publisher.Flux;
 
-public class CustomAdvisor implements CallAdvisor {
+public class CustomAdvisor implements CallAdvisor, StreamAdvisor {
 
   private final static Logger logger = LoggerFactory.getLogger(CustomAdvisor.class);
 
@@ -21,6 +24,15 @@ public class CustomAdvisor implements CallAdvisor {
     ChatClientRequest formattedChatClientRequest = augmentWithCustomInstructions(chatClientRequest);
     return callAdvisorChain.nextCall(chatClientRequest);
   }
+
+  @Override
+  public Flux<ChatClientResponse> adviseStream(ChatClientRequest chatClientRequest, StreamAdvisorChain streamAdvisorChain) {
+    Assert.notNull(chatClientRequest, "the chatClientRequest cannot be null");
+
+    ChatClientRequest formattedChatClientRequest = augmentWithCustomInstructions(chatClientRequest);
+    return streamAdvisorChain.nextStream(chatClientRequest);
+  }
+
 
   private static ChatClientRequest augmentWithCustomInstructions(ChatClientRequest chatClientRequest) {
 
@@ -38,6 +50,7 @@ public class CustomAdvisor implements CallAdvisor {
       .context(Map.copyOf(chatClientRequest.context()))
       .build();
   }
+
 
   @Override
   public String getName() {
