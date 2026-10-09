@@ -17,7 +17,7 @@ public class TextClassifierService {
   TextClassifierService(ChatClient.Builder chatClientBuilder) {
     this.chatClient = chatClientBuilder
       .defaultOptions(ChatOptionsBuilder.builder()
-        .withTemperature(0.0f)
+        .withTemperature(0.0d)
         .build())
       .build();
   }

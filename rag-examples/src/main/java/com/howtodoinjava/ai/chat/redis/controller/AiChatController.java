@@ -13,8 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-//@RestController
+@RestController
 public class AiChatController {
 
   @Autowired
@@ -43,7 +44,7 @@ public class AiChatController {
     if (documents.size() > 0) {
       PromptTemplate promptTemplate = new PromptTemplate(INPUT_PROMPT);
       Prompt prompt = promptTemplate.create(Map.of("query", query, "context", documents));
-      String response = chatModel.call(prompt).getResult().getOutput().getContent();
+      String response = chatModel.call(prompt).getResult().getOutput().getText();
       return ResponseEntity.ok(response);
     }
 

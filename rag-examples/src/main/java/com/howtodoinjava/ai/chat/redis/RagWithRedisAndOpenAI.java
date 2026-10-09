@@ -25,7 +25,7 @@ public class RagWithRedisAndOpenAI implements CommandLineRunner {
     EmbeddingResponse embeddingResponse = embeddingModel.call(
       new EmbeddingRequest(List.of("Hello World", "World is big and salvation is near"),
         OpenAiEmbeddingOptions.builder()
-          .withModel("text-embedding-3-small")
+          .model("text-embedding-3-small")
           .build()));
   }
 }

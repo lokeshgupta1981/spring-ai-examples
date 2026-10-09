@@ -1,15 +1,17 @@
 package com.howtodoinjava.ai.demo;
 
+import java.util.List;
+import java.util.Map;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.ai.converter.MapOutputConverter;
 import org.springframework.ai.openai.OpenAiChatOptions;
-import org.springframework.ai.openai.api.OpenAiApi;
+import org.springframework.ai.openai.api.ResponseFormat;
+import org.springframework.ai.openai.api.ResponseFormat.Type;
 import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+;
 
 @Service
 class ChatService {
@@ -33,7 +35,7 @@ class ChatService {
         .param("country", question.country())
       )
       .options(OpenAiChatOptions.builder()
-        .withResponseFormat(new OpenAiApi.ChatCompletionRequest.ResponseFormat("json_object"))
+        .withResponseFormat(ResponseFormat.builder().type(Type.JSON_OBJECT).build())
         .build())
       .call()
       .entity(PlayerInfo.class);
@@ -67,7 +69,7 @@ class ChatService {
       Tell me the name of three players famous for playing the {sportName}.
        Consider only the players that play for the {country}.
        {format}
-       """;
+      """;
 
     var result = chatClient.prompt()
       .user(userSpec -> userSpec

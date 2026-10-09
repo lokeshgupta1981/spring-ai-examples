@@ -15,7 +15,7 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-transformers-spring-boot-starter</artifactId>
+      <artifactId>spring-ai-transformers</artifactId>
     </dependency>
   </dependencies>
 

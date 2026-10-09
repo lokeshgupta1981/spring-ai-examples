@@ -1,14 +1,12 @@
 package com.howtodoinjava.demo;
 
-import java.util.Arrays;
+import java.util.List;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.embedding.EmbeddingRequest;
 import org.springframework.ai.openai.OpenAiEmbeddingOptions;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 class EmbeddingController {
@@ -23,7 +21,7 @@ class EmbeddingController {
   Response embed(@RequestBody String message) {
 
     var embeddings = embeddingModel.embed(message);
-    return new Response(embeddings.size(), embeddings);
+    return new Response(embeddings.length, embeddings);
   }
 
   @PostMapping("/embed/openai-options")
@@ -35,11 +33,11 @@ class EmbeddingController {
 
     var embeddings = embeddingModel.call(
         new EmbeddingRequest(List.of(message), OpenAiEmbeddingOptions.builder()
-          .withModel("text-embedding-3-small")
-          .withUser("jon.snow")
+          .model("text-embedding-3-small")
+          .user("jon.snow")
           .build()))
       .getResult().getOutput();
-    return "Size of the embedding vector: " + embeddings.size();
+    return "Size of the embedding vector: " + embeddings.length;
   }
 
   /*@PostMapping("/embed/ollama-options")
@@ -69,8 +67,8 @@ class EmbeddingController {
           .getResult().getOutput();
     return "Size of the embedding vector: " + embeddings.size();
   }*/
-
 }
 
-record Response(int dimension, List<Double> vector){
+record Response(int dimension, float[] vector) {
+
 }

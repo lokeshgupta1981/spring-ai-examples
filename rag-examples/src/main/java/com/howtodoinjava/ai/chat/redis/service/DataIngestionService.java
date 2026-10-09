@@ -1,6 +1,6 @@
 package com.howtodoinjava.ai.chat.redis.service;
 
-/*import org.slf4j.Logger;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.reader.ExtractedTextFormatter;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
@@ -10,12 +10,14 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Service;*/
+import org.springframework.stereotype.Service;
 
-//@Service
+import org.springframework.stereotype.Service;
+
+@Service
 public class DataIngestionService {
 
-  /*private static final Logger logger = LoggerFactory.getLogger(DataIngestionService.class);
+  private static final Logger logger = LoggerFactory.getLogger(DataIngestionService.class);
 
   @Value("classpath:/data/spring-boot-reference.pdf")
   Resource pdfFile;
@@ -35,5 +37,5 @@ public class DataIngestionService {
 
     var tokenTextSplitter = new TokenTextSplitter();
     this.vectorStore.accept(tokenTextSplitter.apply(pdfReader.get()));
-  }*/
+  }
 }

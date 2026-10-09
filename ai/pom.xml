@@ -12,6 +12,10 @@
   <packaging>pom</packaging>
   <version>1.0.0</version>
   <name>ai</name>
+  <properties>
+    <java.version>21</java.version>
+    <spring-ai.version>1.0.0</spring-ai.version>
+  </properties>
 
   <modules>
     <module>function-callback</module>

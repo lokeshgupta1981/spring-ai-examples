@@ -17,6 +17,6 @@ class EmbeddingController {
   @PostMapping("/embed")
   String embed(@RequestBody String message) {
     var embeddings = embeddingModel.embed(message);
-    return "Size of the embedding vector: " + embeddings.size();
+    return "Size of the embedding vector: " + embeddings.length;
   }
 }

@@ -14,6 +14,8 @@ public class AppConfiguration {
   @Bean
   @Primary
   ChatModel chatModel(@Value("${spring.ai.openai.api-key}") String apiKey) {
-    return new OpenAiChatModel(new OpenAiApi(apiKey));
+
+    OpenAiApi openAiApi = OpenAiApi.builder().apiKey(apiKey).build();
+    return OpenAiChatModel.builder().openAiApi(openAiApi).build();
   }
 }

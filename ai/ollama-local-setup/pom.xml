@@ -16,7 +16,7 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
+      <artifactId>spring-ai-ollama</artifactId>
     </dependency>
   </dependencies>
 </project>

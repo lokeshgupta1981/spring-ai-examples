@@ -16,12 +16,13 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <start-class>com.howtodoinjava.ai.chat.Application</start-class>
+    <java.version>21</java.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+      <artifactId>spring-ai-openai</artifactId>
     </dependency>
   </dependencies>
 </project>

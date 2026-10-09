@@ -10,11 +10,11 @@ docker run -it --rm --name postgres -p 5432:5432 -e POSTGRES_USER=postgres -e PO
 ```
 <dependency>
   <groupId>org.springframework.ai</groupId>
-  <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+  <artifactId>spring-ai-openai</artifactId>
 </dependency>
 <dependency>
   <groupId>org.springframework.ai</groupId>
-  <artifactId>spring-ai-pgvector-store-spring-boot-starter</artifactId>
+  <artifactId>spring-ai-pgvector-store</artifactId>
 </dependency>
 ```
 

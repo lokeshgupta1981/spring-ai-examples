@@ -11,9 +11,10 @@
   <artifactId>rag-examples</artifactId>
   <packaging>jar</packaging>
   <name>rag-examples</name>
-  <url>http://maven.apache.org</url>
+  <url>https://maven.apache.org</url>
 
   <properties>
+    <java.version>21</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <start-class>com.howtodoinjava.ai.chromaWithOpenAI.Application</start-class>
   </properties>
@@ -21,7 +22,15 @@
   <dependencies>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+      <artifactId>spring-ai-client-chat</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-advisors-vector-store</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-starter-model-openai</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
@@ -34,12 +43,12 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-chroma-store-spring-boot-starter</artifactId>
+      <artifactId>spring-ai-starter-vector-store-chroma</artifactId>
     </dependency>
 
     <!--<dependency>
       <groupId>org.springframework.ai</groupId>
-      <artifactId>spring-ai-elasticsearch-store-spring-boot-starter</artifactId>
+      <artifactId>spring-ai-elasticsearch-store</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
