@@ -33,6 +33,10 @@ mvn spring-boot:run
 | `vectorstore` | Spring AI VectorStore, PgVector, Redis, Vector Stores Compared | `curl "localhost:8080/search?query=return%20a%20jacket&topic=returns"` |
 | `rag` | Spring AI RAG Advisors | `curl "localhost:8080/rag/qa?question=How%20many%20days%20do%20I%20have%20to%20return%20a%20jacket%3F"` |
 | `upload` | Chat with Uploaded Files | open `http://localhost:8080/files.html` and upload `samples/brewmate-kt200-manual.pdf` |
+| `tools` | Spring AI Tool Calling | `curl "localhost:8080/tools/ask?question=What%20is%20the%20status%20of%20order%20ORD-1039%3F"` |
+| `advisors` | Spring AI Advisors Explained | `curl "localhost:8080/advisors/ask?customerId=ravi&question=How%20long%20can%20I%20return%20a%20jacket%3F"` |
+| `mcp` | Spring AI MCP Server and Client | MCP endpoint `http://localhost:8080/mcp`; client app in `../orderdesk-mcp-client` |
+| `agents` | Spring AI Agent Workflow Patterns | `curl "localhost:8080/agents/route?question=Has%20order%20ORD-1040%20been%20delivered%3F"` |
 | `sql` | Query a Database with AI | `curl "localhost:8080/orders/ask?question=How%20many%20orders%20were%20delivered%20to%20Pune%3F"` |
 
 ## Vector stores
@@ -58,3 +62,14 @@ After switching stores, call `POST /ingest` once to load the policy files into t
 Chat memory and the `orders` table are stored in an HSQLDB file database in the `data` folder
 (with the `pgvector` profile they move to PostgreSQL).
 The parcel photo in `src/main/resources/images` is a drawn test image.
+
+## Tests
+
+- `mvn test` runs the unit tests (no model needed).
+- `mvn test -Dtest=SupportClientIT` starts Ollama in Docker with Testcontainers (the first run pulls `qwen2.5:0.5b` and saves the image as `orderdesk-ollama:qwen2.5-0.5b`).
+- `mvn test -Dtest=RagAnswerEvaluationIT` judges RAG answers with the local Ollama (`qwen2.5:3b`).
+
+## Observability
+
+Metrics: `curl localhost:8080/actuator/metrics/gen_ai.client.token.usage`.
+Traces: `docker run -d --name zipkin -p 9411:9411 openzipkin/zipkin`, then run with the `observability` profile and open http://localhost:9411.

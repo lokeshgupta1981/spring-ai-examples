@@ -3,11 +3,13 @@ package com.howtodoinjava.orderdesk.vectorstore;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.redis.RedisVectorStore;
 import org.springframework.ai.vectorstore.redis.RedisVectorStore.MetadataField;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
+import io.micrometer.observation.ObservationRegistry;
 import redis.clients.jedis.RedisClient;
 
 @Configuration
@@ -15,7 +17,8 @@ import redis.clients.jedis.RedisClient;
 public class RedisVectorStoreConfig {
 
     @Bean
-    RedisVectorStore vectorStore(EmbeddingModel embeddingModel, Environment env) {
+    RedisVectorStore vectorStore(EmbeddingModel embeddingModel, Environment env,
+                                 ObjectProvider<ObservationRegistry> observationRegistry) {
         String host = env.getProperty("spring.data.redis.host", "localhost");
         int port = env.getProperty("spring.data.redis.port", Integer.class, 6379);
         return RedisVectorStore.builder(RedisClient.create(host, port), embeddingModel)
@@ -26,6 +29,7 @@ public class RedisVectorStoreConfig {
                 MetadataField.tag("topic"),
                 MetadataField.tag("source"))
             .initializeSchema(true)
+            .observationRegistry(observationRegistry.getIfUnique(() -> ObservationRegistry.NOOP))
             .build();
     }
 }
