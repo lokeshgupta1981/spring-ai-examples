@@ -13,6 +13,7 @@
   <input id="question" size="60" value="Explain your delivery charges in two sentences.">
   <button onclick="askPlain()">Ask (plain text)</button>
   <button onclick="askJson()">Ask (JSON)</button>
+  <button onclick="askLong(document.getElementById('question').value)">Ask (POST)</button>
   <p id="answer"></p>
 
   <script>
@@ -33,6 +34,30 @@
       const source = new EventSource("/stream-json?question=" + question());
       source.onmessage = (event) => answer.textContent += JSON.parse(event.data).text;
       source.onerror = () => source.close();
+    }
+
+    // POST with fetch(), for questions too long for a URL
+    async function askLong(text) {
+      answer.textContent = "";
+      const response = await fetch("/stream-json", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: text
+      });
+      const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+      let buffer = "";
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += value;
+        const events = buffer.split("\n\n");
+        buffer = events.pop();               // an event cut in half waits for the next read
+        for (const event of events) {
+          if (event.startsWith("data:")) {
+            answer.textContent += JSON.parse(event.slice(5)).text;
+          }
+        }
+      }
     }
   </script>
 </body>
