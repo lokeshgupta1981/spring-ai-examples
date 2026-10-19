@@ -5,9 +5,11 @@ import org.springframework.ai.audio.tts.TextToSpeechPrompt;
 import org.springframework.ai.audio.tts.TextToSpeechResponse;
 import org.springframework.ai.openai.OpenAiAudioSpeechOptions;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import reactor.core.publisher.Flux;
 
@@ -38,9 +40,18 @@ public class SpeechController {
         return response.getResult().getOutput();
     }
 
-    // Streams the audio in pieces, so a player can start before the end
-    @GetMapping(value = "/speech/stream", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    Flux<byte[]> stream(@RequestParam String text) {
-        return speechModel.stream(text);
+    // Writes each piece of audio to the response as soon as it arrives
+    @GetMapping("/speech/stream")
+    ResponseEntity<StreamingResponseBody> stream(@RequestParam String text) {
+        Flux<byte[]> pieces = speechModel.stream(text);
+        StreamingResponseBody body = out -> {
+            for (byte[] piece : pieces.toIterable()) {
+                out.write(piece);
+                out.flush();
+            }
+        };
+        return ResponseEntity.ok()
+            .contentType(MediaType.parseMediaType("audio/mpeg"))
+            .body(body);
     }
 }
