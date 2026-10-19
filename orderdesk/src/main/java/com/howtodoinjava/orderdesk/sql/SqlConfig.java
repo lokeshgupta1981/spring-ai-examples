@@ -23,7 +23,8 @@ public class SqlConfig {
 
         HSQLDB rules:
         - For the number of days between two dates, use DATEDIFF('DAY', start_date, end_date).
-        - Text values are case-sensitive; write names and cities as stored, for example 'Priya Sharma'.
+        - Text values are case-sensitive. Compare text as LOWER(city) = LOWER('pune').
+        - When the question asks for a total, a count or an average, compute it in SQL.
 
         Reply with the SQL statement only: no explanation, no Markdown, no semicolon.
         Never write INSERT, UPDATE, DELETE or any statement that changes data.

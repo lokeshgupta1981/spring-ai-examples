@@ -3,10 +3,10 @@ package com.howtodoinjava.orderdesk.vectorstore;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.redis.RedisVectorStore;
 import org.springframework.ai.vectorstore.redis.RedisVectorStore.MetadataField;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.env.Environment;
 
 import redis.clients.jedis.RedisClient;
 
@@ -15,9 +15,9 @@ import redis.clients.jedis.RedisClient;
 public class RedisVectorStoreConfig {
 
     @Bean
-    RedisVectorStore vectorStore(EmbeddingModel embeddingModel,
-                                 @Value("${spring.data.redis.host}") String host,
-                                 @Value("${spring.data.redis.port}") int port) {
+    RedisVectorStore vectorStore(EmbeddingModel embeddingModel, Environment env) {
+        String host = env.getProperty("spring.data.redis.host", "localhost");
+        int port = env.getProperty("spring.data.redis.port", Integer.class, 6379);
         return RedisVectorStore.builder(RedisClient.create(host, port), embeddingModel)
             .indexName("orderdesk-policies")
             .prefix("policy:")

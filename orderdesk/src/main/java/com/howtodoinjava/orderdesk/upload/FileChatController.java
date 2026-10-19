@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
@@ -15,6 +16,7 @@ import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.howtodoinjava.orderdesk.vectorstore.SimpleVectorStoreConfig;
 
@@ -35,6 +38,9 @@ public class FileChatController {
         If the document has nothing related to the question, say that it does not cover it.
         Answer in at most three sentences.
         """;
+
+    // A file id is 12 hex characters; anything else could change the filter expression
+    private static final Pattern FILE_ID = Pattern.compile("[0-9a-f]{12}");
 
     private final VectorStore vectorStore;
     private final ChatClient fileClient;
@@ -79,6 +85,7 @@ public class FileChatController {
 
     @GetMapping("/files/{fileId}/ask")
     String ask(@PathVariable String fileId, @RequestParam String question) {
+        checkFileId(fileId);
         return fileClient.prompt()
             .user(question)
             .advisors(fileAdvisor)
@@ -91,10 +98,17 @@ public class FileChatController {
 
     @DeleteMapping("/files/{fileId}")
     ResponseEntity<Void> delete(@PathVariable String fileId) {
+        checkFileId(fileId);
         vectorStore.delete("file_id == '" + fileId + "'");
         saveIfSimpleStore();
         files.remove(fileId);
         return ResponseEntity.noContent().build();
+    }
+
+    private static void checkFileId(String fileId) {
+        if (!FILE_ID.matcher(fileId).matches()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid file id");
+        }
     }
 
     private void saveIfSimpleStore() {
