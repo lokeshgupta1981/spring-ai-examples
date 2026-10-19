@@ -155,8 +155,8 @@ public class WorkflowController {
                 .entity(Evaluation.class);
             rounds.add("ROUND " + round + ": " + reply + " | PASS=" + evaluation.pass()
                 + " | " + evaluation.feedback());
-            if (evaluation.pass()) {
-                break;
+            if (evaluation.pass() || round == 3) {
+                break;   // passed, or no rounds left to judge an improved reply
             }
             reply = supportClient.prompt()
                 .user("""
