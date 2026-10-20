@@ -76,7 +76,9 @@ public class OrderDeskMcpServer {
             four sentences that states the order status and the next step.
             """.formatted(orderId, complaint);
         // a String return becomes an assistant message; a prompt should be a user message
-        return new GetPromptResult("Reply to a customer about one order",
-            List.of(new PromptMessage(Role.USER, new TextContent(text))));
+        return GetPromptResult.builder(
+                List.of(new PromptMessage(Role.USER, TextContent.builder(text).build())))
+            .description("Reply to a customer about one order")
+            .build();
     }
 }
