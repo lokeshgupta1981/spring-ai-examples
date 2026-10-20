@@ -1,5 +1,7 @@
 # OrderDesk MCP Client
 
+Source code for the article [Spring AI MCP: Server and Client Example](https://howtodoinjava.com/spring-ai/spring-ai-mcp/).
+
 A small Spring Boot app that uses the tools of the OrderDesk MCP server.
 
 1. Start Ollama with `qwen2.5:3b`, then start OrderDesk (it serves MCP at `http://localhost:8080/mcp`).
