@@ -31,3 +31,5 @@ use Spring AI 1.0 and OpenAI.
 | [orderdesk-mcp-client](orderdesk-mcp-client) | Spring AI MCP (client side) |
 | [orderdesk-migration](orderdesk-migration) | Spring AI 1.x to 2.0 migration |
 | [orderdesk-anthropic](orderdesk-anthropic), [orderdesk-gemini](orderdesk-gemini), [orderdesk-deepseek](orderdesk-deepseek), [orderdesk-bedrock](orderdesk-bedrock), [orderdesk-dmr](orderdesk-dmr) | One model provider each |
+| [java-ai-frameworks](java-ai-frameworks) | Spring AI vs LangChain4j vs Embabel vs AgentScope Java (one tool call in each framework) |
+| [multi-agent-ai-java](multi-agent-ai-java) | Multi-Agent AI in Java (LangChain4j agentic support desk, plain Java) |
