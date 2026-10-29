@@ -76,6 +76,7 @@ Article: [Testing Spring AI Apps](https://howtodoinjava.com/spring-ai/spring-ai-
 - `mvn test` runs the unit tests (no model needed).
 - `mvn test -Dtest=SupportClientIT` starts Ollama in Docker with Testcontainers (the first run pulls `qwen2.5:0.5b` and saves the image as `orderdesk-ollama:qwen2.5-0.5b`).
 - `mvn test -Dtest=RagAnswerEvaluationIT` judges RAG answers with the local Ollama (`qwen2.5:3b`).
+- Set `RUN_LLM_EVAL=true` and run `mvn test -Dtest=OrderAnswerQualityIT` to check the Pune order answer with local Ollama. Pull `qwen2.5:3b`, `nomic-embed-text`, and `bespoke-minicheck` first. The test checks labeled judge responses before counting repeated live answers.
 
 ## Observability
 
